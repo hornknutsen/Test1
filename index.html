@@ -19,50 +19,47 @@
       padding: 48px 16px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    header h1 {
-      font-size: 2.4rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
+    header { text-align: center; margin-bottom: 48px; }
+    header h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.5px; }
     header h1 span { color: #6c8ef7; }
-
-    header p {
-      margin-top: 10px;
-      color: #8b93a8;
-      font-size: 1rem;
-      max-width: 480px;
-    }
+    header p { margin-top: 10px; color: #8b93a8; font-size: 1rem; max-width: 480px; }
 
     .card {
       background: #1a1d27;
       border: 1px solid #2a2d3e;
       border-radius: 16px;
-      padding: 36px;
+      padding: 32px;
       width: 100%;
       max-width: 520px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .card h2 {
-      font-size: 1rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: #8b93a8;
       text-transform: uppercase;
       letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+
+    /* Two-column grid for side-by-side cards */
+    .card-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      max-width: 520px;
       margin-bottom: 20px;
     }
 
-    .input-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .card-row .card {
+      max-width: none;
+      margin-bottom: 0;
+      padding: 24px;
     }
+
+    .input-group { display: flex; align-items: center; gap: 10px; }
 
     .input-group input[type="range"] {
       flex: 1;
@@ -76,116 +73,114 @@
 
     .input-group input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: opacity 0.2s;
     }
 
     #amountSlider::-webkit-slider-thumb  { background: #6c8ef7; }
     #monthlySlider::-webkit-slider-thumb { background: #a78bfa; }
     #rateSlider::-webkit-slider-thumb    { background: #6cf7a8; }
+    #taxSlider::-webkit-slider-thumb     { background: #f87171; }
+    #inflationSlider::-webkit-slider-thumb { background: #fbbf24; }
 
     .val-display {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 700;
-      min-width: 110px;
+      min-width: 100px;
       text-align: right;
     }
 
     .val-display.blue   { color: #6c8ef7; }
     .val-display.purple { color: #a78bfa; }
     .val-display.green  { color: #6cf7a8; }
+    .val-display.red    { color: #f87171; }
+    .val-display.yellow { color: #fbbf24; }
 
-    .presets {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 16px;
+    .val-display-sm {
+      font-size: 1rem;
+      font-weight: 700;
+      min-width: 60px;
+      text-align: right;
     }
+
+    .val-display-sm.red    { color: #f87171; }
+    .val-display-sm.yellow { color: #fbbf24; }
+
+    .presets { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
 
     .preset-btn {
       background: #2a2d3e;
       border: 1px solid #3a3d52;
       color: #c0c6d8;
       border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 0.85rem;
+      padding: 5px 12px;
+      font-size: 0.82rem;
       cursor: pointer;
       transition: all 0.15s;
     }
 
     .preset-btn:hover { background: #3a3d52; color: #e8eaf0; }
-
     .preset-btn.active-blue   { background: #6c8ef7; border-color: #6c8ef7; color: #fff; }
     .preset-btn.active-purple { background: #a78bfa; border-color: #a78bfa; color: #fff; }
     .preset-btn.active-green  { background: #6cf7a8; border-color: #6cf7a8; color: #0f1117; }
+    .preset-btn.active-red    { background: #f87171; border-color: #f87171; color: #fff; }
+    .preset-btn.active-yellow { background: #fbbf24; border-color: #fbbf24; color: #0f1117; }
 
-    .results {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
+    .results { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     .result-box {
       background: #0f1117;
       border: 1px solid #2a2d3e;
       border-radius: 12px;
-      padding: 24px 20px;
+      padding: 20px 16px;
       text-align: center;
     }
 
     .result-box .label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #8b93a8;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .result-box .value {
-      font-size: 2.6rem;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .result-box .unit {
-      font-size: 0.9rem;
-      color: #8b93a8;
-      margin-top: 6px;
-    }
+    .result-box .value { font-size: 2.4rem; font-weight: 700; line-height: 1; }
+    .result-box .unit  { font-size: 0.85rem; color: #8b93a8; margin-top: 5px; }
 
     .result-box.estimate .value { color: #f7c26c; }
     .result-box.exact .value    { color: #6cf7a8; }
 
     .info-row {
-      margin-top: 12px;
+      margin-top: 10px;
       background: #0f1117;
       border: 1px solid #2a2d3e;
-      border-radius: 12px;
-      padding: 14px 20px;
+      border-radius: 10px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: #8b93a8;
+      gap: 8px;
     }
 
-    .info-row span { color: #e8eaf0; font-weight: 600; }
+    .info-row span { color: #e8eaf0; font-weight: 600; white-space: nowrap; }
 
     .chart-card {
       background: #1a1d27;
       border: 1px solid #2a2d3e;
       border-radius: 16px;
-      padding: 36px;
+      padding: 32px;
       width: 100%;
       max-width: 520px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .chart-card h2 {
-      font-size: 1rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: #8b93a8;
       text-transform: uppercase;
@@ -195,56 +190,51 @@
 
     .chart-legend {
       display: flex;
-      gap: 18px;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-bottom: 16px;
-      font-size: 0.82rem;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
       color: #8b93a8;
     }
 
     .legend-dot {
       display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
-      margin-right: 5px;
+      margin-right: 4px;
     }
 
     .explainer {
       background: #1a1d27;
       border: 1px solid #2a2d3e;
       border-radius: 16px;
-      padding: 28px 36px;
+      padding: 28px 32px;
       width: 100%;
       max-width: 520px;
     }
 
     .explainer h2 {
-      font-size: 1rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: #8b93a8;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .formula {
       background: #0f1117;
       border: 1px solid #2a2d3e;
       border-radius: 10px;
-      padding: 14px 18px;
+      padding: 12px 16px;
       font-family: "Courier New", monospace;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #6c8ef7;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .explainer p {
-      font-size: 0.9rem;
-      color: #8b93a8;
-      line-height: 1.7;
-      margin-top: 10px;
-    }
+    .explainer p { font-size: 0.88rem; color: #8b93a8; line-height: 1.7; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -262,11 +252,11 @@
       <div class="val-display blue" id="amountDisplay">10 000 kr</div>
     </div>
     <div class="presets" id="amountPresets">
-      <button class="preset-btn" onclick="setAmount(5000)">5 000</button>
-      <button class="preset-btn" onclick="setAmount(10000)">10 000</button>
-      <button class="preset-btn" onclick="setAmount(50000)">50 000</button>
-      <button class="preset-btn" onclick="setAmount(100000)">100 000</button>
-      <button class="preset-btn" onclick="setAmount(500000)">500 000</button>
+      <button class="preset-btn" onclick="setVal('amountSlider',5000)">5 000</button>
+      <button class="preset-btn" onclick="setVal('amountSlider',10000)">10 000</button>
+      <button class="preset-btn" onclick="setVal('amountSlider',50000)">50 000</button>
+      <button class="preset-btn" onclick="setVal('amountSlider',100000)">100 000</button>
+      <button class="preset-btn" onclick="setVal('amountSlider',500000)">500 000</button>
     </div>
   </div>
 
@@ -278,11 +268,11 @@
       <div class="val-display purple" id="monthlyDisplay">500 kr</div>
     </div>
     <div class="presets" id="monthlyPresets">
-      <button class="preset-btn" onclick="setMonthly(0)">0 kr</button>
-      <button class="preset-btn" onclick="setMonthly(500)">500 kr</button>
-      <button class="preset-btn" onclick="setMonthly(1000)">1 000 kr</button>
-      <button class="preset-btn" onclick="setMonthly(2000)">2 000 kr</button>
-      <button class="preset-btn" onclick="setMonthly(5000)">5 000 kr</button>
+      <button class="preset-btn" onclick="setVal('monthlySlider',0)">0 kr</button>
+      <button class="preset-btn" onclick="setVal('monthlySlider',500)">500 kr</button>
+      <button class="preset-btn" onclick="setVal('monthlySlider',1000)">1 000 kr</button>
+      <button class="preset-btn" onclick="setVal('monthlySlider',2000)">2 000 kr</button>
+      <button class="preset-btn" onclick="setVal('monthlySlider',5000)">5 000 kr</button>
     </div>
   </div>
 
@@ -294,11 +284,41 @@
       <div class="val-display green" id="rateDisplay">7%</div>
     </div>
     <div class="presets" id="ratePresets">
-      <button class="preset-btn" onclick="setRate(3)">3%</button>
-      <button class="preset-btn" onclick="setRate(7)">7%</button>
-      <button class="preset-btn" onclick="setRate(10)">10%</button>
-      <button class="preset-btn" onclick="setRate(15)">15%</button>
-      <button class="preset-btn" onclick="setRate(20)">20%</button>
+      <button class="preset-btn" onclick="setVal('rateSlider',3)">3%</button>
+      <button class="preset-btn" onclick="setVal('rateSlider',7)">7%</button>
+      <button class="preset-btn" onclick="setVal('rateSlider',10)">10%</button>
+      <button class="preset-btn" onclick="setVal('rateSlider',15)">15%</button>
+      <button class="preset-btn" onclick="setVal('rateSlider',20)">20%</button>
+    </div>
+  </div>
+
+  <!-- Skatt + Inflasjon side ved side -->
+  <div class="card-row">
+    <div class="card">
+      <h2>Kapitalskatt</h2>
+      <div class="input-group">
+        <input type="range" id="taxSlider" min="0" max="50" step="1" value="22" oninput="update()" />
+        <div class="val-display-sm red" id="taxDisplay">22%</div>
+      </div>
+      <div class="presets" id="taxPresets">
+        <button class="preset-btn" onclick="setVal('taxSlider',0)">0%</button>
+        <button class="preset-btn" onclick="setVal('taxSlider',22)">22%</button>
+        <button class="preset-btn" onclick="setVal('taxSlider',37)">37%</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Inflasjon</h2>
+      <div class="input-group">
+        <input type="range" id="inflationSlider" min="0" max="15" step="0.5" value="3" oninput="update()" />
+        <div class="val-display-sm yellow" id="inflationDisplay">3%</div>
+      </div>
+      <div class="presets" id="inflationPresets">
+        <button class="preset-btn" onclick="setVal('inflationSlider',0)">0%</button>
+        <button class="preset-btn" onclick="setVal('inflationSlider',2)">2%</button>
+        <button class="preset-btn" onclick="setVal('inflationSlider',3)">3%</button>
+        <button class="preset-btn" onclick="setVal('inflationSlider',5)">5%</button>
+      </div>
     </div>
   </div>
 
@@ -318,12 +338,16 @@
       </div>
     </div>
     <div class="info-row">
-      Verdi ved dobling (uten sparing)
-      <span id="doubleValue">20 000 kr</span>
+      Nominell verdi ved doblingspunkt
+      <span id="doubleNominal">—</span>
     </div>
     <div class="info-row">
-      Total verdi med sparing (ved doblingspunkt)
-      <span id="doubleWithSavings">—</span>
+      Etter skatt ved doblingspunkt
+      <span id="doubleAfterTax">—</span>
+    </div>
+    <div class="info-row">
+      Realverdi (kjøpekraft) ved doblingspunkt
+      <span id="doubleReal">—</span>
     </div>
     <div class="info-row">
       Avvik mellom metodene
@@ -335,9 +359,11 @@
   <div class="chart-card">
     <h2>Vekst over tid</h2>
     <div class="chart-legend">
-      <span><span class="legend-dot" style="background:#6c8ef7"></span>Uten månedlig sparing</span>
-      <span><span class="legend-dot" style="background:#a78bfa"></span>Med månedlig sparing</span>
-      <span><span class="legend-dot" style="background:#f7c26c"></span>Dobblingspunkt</span>
+      <span><span class="legend-dot" style="background:#6c8ef7"></span>Nominell</span>
+      <span><span class="legend-dot" style="background:#a78bfa"></span>Med sparing</span>
+      <span><span class="legend-dot" style="background:#f87171"></span>Etter skatt</span>
+      <span><span class="legend-dot" style="background:#fbbf24"></span>Realverdi</span>
+      <span><span class="legend-dot" style="background:#f7c26c; border-radius:0"></span>Dobling</span>
     </div>
     <canvas id="growthChart"></canvas>
   </div>
@@ -345,12 +371,15 @@
   <!-- Forklaring -->
   <div class="explainer">
     <h2>Formlene</h2>
-    <div class="formula">Regel av 72:      år ≈ 72 / rente</div>
-    <div class="formula">Eksakt:           år = log(2) / log(1 + r)</div>
-    <div class="formula">Med sparing:      FV = P·(1+r)ⁿ + PMT·((1+rm)^(12n) − 1) / rm</div>
+    <div class="formula">Regel av 72:    år ≈ 72 / rente</div>
+    <div class="formula">Eksakt:         år = log(2) / log(1 + r)</div>
+    <div class="formula">Med sparing:    FV = P·(1+r)ⁿ + PMT·((1+rm)^12n − 1) / rm</div>
+    <div class="formula">Etter skatt:    r_netto = r · (1 − skattesats)</div>
+    <div class="formula">Realverdi:      FV_real = FV_netto / (1 + inflasjon)ⁿ</div>
     <p>
-      Regel av 72 gjelder for et engangsbeløp. Med månedlig sparing vokser
-      porteføljen raskere takket være renters rente på hver innskudd.
+      Kapitalskatt (22% ordinært, 37,84% for aksjer via oppjusteringsfaktor) reduserer
+      effektiv avkastning. Inflasjon tærer på kjøpekraften — realverdi viser hva
+      pengene faktisk er verdt i dagens kroneverdi.
     </p>
   </div>
 
@@ -389,59 +418,82 @@
       return Math.round(n).toLocaleString("no-NO") + " kr";
     }
 
-    function fvWithSavings(start, monthly, annualRate, years) {
-      const rm = annualRate / 100 / 12;
+    // Future value with monthly savings, before tax
+    function fv(start, monthly, annualRate, years) {
+      const rm     = annualRate / 100 / 12;
       const months = years * 12;
-      const lump = start * Math.pow(1 + annualRate / 100, years);
-      const savings = rm === 0
-        ? monthly * months
-        : monthly * (Math.pow(1 + rm, months) - 1) / rm;
-      return lump + savings;
+      const lump   = start * Math.pow(1 + annualRate / 100, years);
+      const sav    = rm === 0 ? monthly * months : monthly * (Math.pow(1 + rm, months) - 1) / rm;
+      return lump + sav;
     }
 
-    function buildChart(rate, startAmount, monthly) {
+    // After-tax: tax applied on gains each year (net rate approach)
+    function fvAfterTax(start, monthly, annualRate, tax, years) {
+      const netRate = annualRate * (1 - tax / 100);
+      return fv(start, monthly, netRate, years);
+    }
+
+    // Real value: deflate by inflation
+    function realVal(nominalFv, inflation, years) {
+      return nominalFv / Math.pow(1 + inflation / 100, years);
+    }
+
+    function buildChart(rate, start, monthly, tax, inflation) {
       const exact = Math.log(2) / Math.log(1 + rate / 100);
       const years = Math.ceil(exact * 2.5);
-      const labels = [], noSav = [], withSav = [], doubPts = [];
+      const labels = [], nominal = [], withSav = [], afterTax = [], real = [], doubPts = [];
 
       for (let y = 0; y <= years; y++) {
         labels.push(y);
-        const plain = startAmount * Math.pow(1 + rate / 100, y);
-        noSav.push(parseFloat(plain.toFixed(2)));
-        withSav.push(parseFloat(fvWithSavings(startAmount, monthly, rate, y).toFixed(2)));
-        doubPts.push(y === Math.round(exact) ? parseFloat(plain.toFixed(2)) : null);
+        const nom  = start * Math.pow(1 + rate / 100, y);
+        const sav  = fv(start, monthly, rate, y);
+        const taxd = fvAfterTax(start, monthly, rate, tax, y);
+        const rl   = realVal(taxd, inflation, y);
+
+        nominal.push(nom);
+        withSav.push(sav);
+        afterTax.push(taxd);
+        real.push(rl);
+        doubPts.push(y === Math.round(exact) ? nom : null);
       }
 
       chart.data.labels   = labels;
       chart.data.datasets = [
         {
-          label: "Uten sparing",
-          data: noSav,
+          label: "Nominell",
+          data: nominal,
           borderColor: "#6c8ef7",
-          backgroundColor: "rgba(108,142,247,0.07)",
-          fill: true,
-          tension: 0.4,
-          pointRadius: 2,
-          pointHoverRadius: 5
+          backgroundColor: "rgba(108,142,247,0.05)",
+          fill: true, tension: 0.4, pointRadius: 2, pointHoverRadius: 5
         },
         {
           label: "Med sparing",
           data: withSav,
           borderColor: "#a78bfa",
-          backgroundColor: "rgba(167,139,250,0.07)",
-          fill: true,
-          tension: 0.4,
-          pointRadius: 2,
-          pointHoverRadius: 5
+          backgroundColor: "rgba(167,139,250,0.05)",
+          fill: true, tension: 0.4, pointRadius: 2, pointHoverRadius: 5
+        },
+        {
+          label: "Etter skatt",
+          data: afterTax,
+          borderColor: "#f87171",
+          backgroundColor: "rgba(248,113,113,0.05)",
+          fill: true, tension: 0.4, pointRadius: 2, pointHoverRadius: 5
+        },
+        {
+          label: "Realverdi",
+          data: real,
+          borderColor: "#fbbf24",
+          backgroundColor: "rgba(251,191,36,0.05)",
+          fill: true, tension: 0.4, pointRadius: 2, pointHoverRadius: 5,
+          borderDash: [5, 4]
         },
         {
           label: "Dobblingspunkt",
           data: doubPts,
           borderColor: "#f7c26c",
           backgroundColor: "#f7c26c",
-          pointRadius: 8,
-          pointHoverRadius: 10,
-          showLine: false
+          pointRadius: 8, pointHoverRadius: 10, showLine: false
         }
       ];
       chart.update();
@@ -449,44 +501,57 @@
 
     function syncPresets(groupId, activeClass, matchFn) {
       document.querySelectorAll(`#${groupId} .preset-btn`).forEach(btn => {
-        btn.classList.remove("active-blue", "active-purple", "active-green");
+        btn.classList.remove("active-blue","active-purple","active-green","active-red","active-yellow");
         if (matchFn(btn)) btn.classList.add(activeClass);
       });
     }
 
     function update() {
-      const rate    = parseFloat(document.getElementById("rateSlider").value);
-      const amount  = parseFloat(document.getElementById("amountSlider").value);
-      const monthly = parseFloat(document.getElementById("monthlySlider").value);
+      const rate      = parseFloat(document.getElementById("rateSlider").value);
+      const amount    = parseFloat(document.getElementById("amountSlider").value);
+      const monthly   = parseFloat(document.getElementById("monthlySlider").value);
+      const tax       = parseFloat(document.getElementById("taxSlider").value);
+      const inflation = parseFloat(document.getElementById("inflationSlider").value);
 
-      document.getElementById("rateDisplay").textContent   = rate + "%";
-      document.getElementById("amountDisplay").textContent = fmt(amount);
-      document.getElementById("monthlyDisplay").textContent = fmt(monthly);
+      document.getElementById("rateDisplay").textContent      = rate + "%";
+      document.getElementById("amountDisplay").textContent    = fmt(amount);
+      document.getElementById("monthlyDisplay").textContent   = fmt(monthly);
+      document.getElementById("taxDisplay").textContent       = tax + "%";
+      document.getElementById("inflationDisplay").textContent = inflation + "%";
 
       const rule72 = 72 / rate;
       const exact  = Math.log(2) / Math.log(1 + rate / 100);
       const diff   = Math.abs(rule72 - exact);
-      const withSavAtDouble = fvWithSavings(amount, monthly, rate, exact);
 
-      document.getElementById("rule72").textContent           = rule72.toFixed(1);
-      document.getElementById("exact").textContent            = exact.toFixed(2);
-      document.getElementById("deviation").textContent        = diff.toFixed(2) + " år";
-      document.getElementById("doubleValue").textContent      = fmt(amount * 2);
-      document.getElementById("doubleWithSavings").textContent = fmt(withSavAtDouble);
+      const nomAtDouble     = fv(amount, monthly, rate, exact);
+      const taxAtDouble     = fvAfterTax(amount, monthly, rate, tax, exact);
+      const realAtDouble    = realVal(taxAtDouble, inflation, exact);
 
-      syncPresets("amountPresets",  "active-blue",
+      document.getElementById("rule72").textContent        = rule72.toFixed(1);
+      document.getElementById("exact").textContent         = exact.toFixed(2);
+      document.getElementById("deviation").textContent     = diff.toFixed(2) + " år";
+      document.getElementById("doubleNominal").textContent  = fmt(nomAtDouble);
+      document.getElementById("doubleAfterTax").textContent = fmt(taxAtDouble);
+      document.getElementById("doubleReal").textContent     = fmt(realAtDouble);
+
+      syncPresets("amountPresets",    "active-blue",
         btn => parseFloat(btn.textContent.replace(/\s/g,"")) === amount);
-      syncPresets("monthlyPresets", "active-purple",
+      syncPresets("monthlyPresets",   "active-purple",
         btn => parseFloat(btn.textContent.replace(/[^\d]/g,"")) === monthly);
-      syncPresets("ratePresets",    "active-green",
+      syncPresets("ratePresets",      "active-green",
         btn => parseFloat(btn.textContent) === rate);
+      syncPresets("taxPresets",       "active-red",
+        btn => parseFloat(btn.textContent) === tax);
+      syncPresets("inflationPresets", "active-yellow",
+        btn => parseFloat(btn.textContent) === inflation);
 
-      buildChart(rate, amount, monthly);
+      buildChart(rate, amount, monthly, tax, inflation);
     }
 
-    function setAmount(v)  { document.getElementById("amountSlider").value  = v; update(); }
-    function setMonthly(v) { document.getElementById("monthlySlider").value = v; update(); }
-    function setRate(v)    { document.getElementById("rateSlider").value     = v; update(); }
+    function setVal(id, v) {
+      document.getElementById(id).value = v;
+      update();
+    }
 
     update();
   </script>
