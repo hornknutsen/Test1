@@ -6,11 +6,7 @@
   <title>Regel av 72</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -34,9 +30,7 @@
       letter-spacing: -0.5px;
     }
 
-    header h1 span {
-      color: #6c8ef7;
-    }
+    header h1 span { color: #6c8ef7; }
 
     header p {
       margin-top: 10px;
@@ -84,23 +78,25 @@
       -webkit-appearance: none;
       width: 20px;
       height: 20px;
-      background: #6c8ef7;
       border-radius: 50%;
       cursor: pointer;
       transition: background 0.2s;
     }
 
-    .input-group input[type="range"]::-webkit-slider-thumb:hover {
-      background: #8aaafa;
-    }
+    #amountSlider::-webkit-slider-thumb  { background: #6c8ef7; }
+    #monthlySlider::-webkit-slider-thumb { background: #a78bfa; }
+    #rateSlider::-webkit-slider-thumb    { background: #6cf7a8; }
 
-    .rate-display {
-      font-size: 1.6rem;
+    .val-display {
+      font-size: 1.3rem;
       font-weight: 700;
-      color: #6c8ef7;
-      min-width: 70px;
+      min-width: 110px;
       text-align: right;
     }
+
+    .val-display.blue   { color: #6c8ef7; }
+    .val-display.purple { color: #a78bfa; }
+    .val-display.green  { color: #6cf7a8; }
 
     .presets {
       display: flex;
@@ -120,16 +116,11 @@
       transition: all 0.15s;
     }
 
-    .preset-btn:hover {
-      background: #3a3d52;
-      color: #e8eaf0;
-    }
+    .preset-btn:hover { background: #3a3d52; color: #e8eaf0; }
 
-    .preset-btn.active {
-      background: #6c8ef7;
-      border-color: #6c8ef7;
-      color: #fff;
-    }
+    .preset-btn.active-blue   { background: #6c8ef7; border-color: #6c8ef7; color: #fff; }
+    .preset-btn.active-purple { background: #a78bfa; border-color: #a78bfa; color: #fff; }
+    .preset-btn.active-green  { background: #6cf7a8; border-color: #6cf7a8; color: #0f1117; }
 
     .results {
       display: grid;
@@ -168,22 +159,55 @@
     .result-box.estimate .value { color: #f7c26c; }
     .result-box.exact .value    { color: #6cf7a8; }
 
-    .deviation {
-      margin-top: 16px;
+    .info-row {
+      margin-top: 12px;
       background: #0f1117;
       border: 1px solid #2a2d3e;
       border-radius: 12px;
-      padding: 16px 20px;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #8b93a8;
     }
 
-    .deviation span {
-      color: #e8eaf0;
+    .info-row span { color: #e8eaf0; font-weight: 600; }
+
+    .chart-card {
+      background: #1a1d27;
+      border: 1px solid #2a2d3e;
+      border-radius: 16px;
+      padding: 36px;
+      width: 100%;
+      max-width: 520px;
+      margin-bottom: 24px;
+    }
+
+    .chart-card h2 {
+      font-size: 1rem;
       font-weight: 600;
+      color: #8b93a8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      font-size: 0.82rem;
+      color: #8b93a8;
+    }
+
+    .legend-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
     }
 
     .explainer {
@@ -210,54 +234,16 @@
       border-radius: 10px;
       padding: 14px 18px;
       font-family: "Courier New", monospace;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #6c8ef7;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .explainer p {
       font-size: 0.9rem;
       color: #8b93a8;
       line-height: 1.7;
-    }
-
-    .explainer p + p {
       margin-top: 10px;
-    }
-
-    .chart-card {
-      background: #1a1d27;
-      border: 1px solid #2a2d3e;
-      border-radius: 16px;
-      padding: 36px;
-      width: 100%;
-      max-width: 520px;
-      margin-bottom: 24px;
-    }
-
-    .chart-card h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #8b93a8;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 20px;
-    }
-
-    .chart-legend {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 16px;
-      font-size: 0.85rem;
-      color: #8b93a8;
-    }
-
-    .legend-dot {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-right: 6px;
     }
   </style>
 </head>
@@ -268,38 +254,57 @@
     <p>Finn ut hvor mange år det tar å doble investeringen din — raskt og nøyaktig.</p>
   </header>
 
+  <!-- Startbeløp -->
   <div class="card">
     <h2>Startbeløp</h2>
     <div class="input-group">
       <input type="range" id="amountSlider" min="1000" max="1000000" step="1000" value="10000" oninput="update()" />
-      <div class="rate-display" id="amountDisplay" style="min-width:100px;font-size:1.2rem">10 000 kr</div>
+      <div class="val-display blue" id="amountDisplay">10 000 kr</div>
     </div>
-    <div class="presets">
+    <div class="presets" id="amountPresets">
       <button class="preset-btn" onclick="setAmount(5000)">5 000</button>
-      <button class="preset-btn active" onclick="setAmount(10000)">10 000</button>
+      <button class="preset-btn" onclick="setAmount(10000)">10 000</button>
       <button class="preset-btn" onclick="setAmount(50000)">50 000</button>
       <button class="preset-btn" onclick="setAmount(100000)">100 000</button>
       <button class="preset-btn" onclick="setAmount(500000)">500 000</button>
     </div>
   </div>
 
+  <!-- Månedlig sparing -->
+  <div class="card">
+    <h2>Månedlig sparing</h2>
+    <div class="input-group">
+      <input type="range" id="monthlySlider" min="0" max="20000" step="100" value="500" oninput="update()" />
+      <div class="val-display purple" id="monthlyDisplay">500 kr</div>
+    </div>
+    <div class="presets" id="monthlyPresets">
+      <button class="preset-btn" onclick="setMonthly(0)">0 kr</button>
+      <button class="preset-btn" onclick="setMonthly(500)">500 kr</button>
+      <button class="preset-btn" onclick="setMonthly(1000)">1 000 kr</button>
+      <button class="preset-btn" onclick="setMonthly(2000)">2 000 kr</button>
+      <button class="preset-btn" onclick="setMonthly(5000)">5 000 kr</button>
+    </div>
+  </div>
+
+  <!-- Rente -->
   <div class="card">
     <h2>Årlig rente</h2>
     <div class="input-group">
       <input type="range" id="rateSlider" min="0.5" max="30" step="0.5" value="7" oninput="update()" />
-      <div class="rate-display" id="rateDisplay">7%</div>
+      <div class="val-display green" id="rateDisplay">7%</div>
     </div>
-    <div class="presets">
+    <div class="presets" id="ratePresets">
       <button class="preset-btn" onclick="setRate(3)">3%</button>
-      <button class="preset-btn active" onclick="setRate(7)">7%</button>
+      <button class="preset-btn" onclick="setRate(7)">7%</button>
       <button class="preset-btn" onclick="setRate(10)">10%</button>
       <button class="preset-btn" onclick="setRate(15)">15%</button>
       <button class="preset-btn" onclick="setRate(20)">20%</button>
     </div>
   </div>
 
+  <!-- Resultat -->
   <div class="card">
-    <h2>Resultat — år til dobling</h2>
+    <h2>Resultat — år til dobling (startbeløp)</h2>
     <div class="results">
       <div class="result-box estimate">
         <div class="label">Regel av 72</div>
@@ -312,42 +317,45 @@
         <div class="unit">år (logaritme)</div>
       </div>
     </div>
-    <div class="deviation">
-      Verdi ved dobling
+    <div class="info-row">
+      Verdi ved dobling (uten sparing)
       <span id="doubleValue">20 000 kr</span>
     </div>
-    <div class="deviation" style="margin-top:8px">
+    <div class="info-row">
+      Total verdi med sparing (ved doblingspunkt)
+      <span id="doubleWithSavings">—</span>
+    </div>
+    <div class="info-row">
       Avvik mellom metodene
       <span id="deviation">0.04 år</span>
     </div>
   </div>
 
+  <!-- Graf -->
   <div class="chart-card">
     <h2>Vekst over tid</h2>
     <div class="chart-legend">
-      <span><span class="legend-dot" style="background:#6c8ef7"></span>Investeringsverdi</span>
+      <span><span class="legend-dot" style="background:#6c8ef7"></span>Uten månedlig sparing</span>
+      <span><span class="legend-dot" style="background:#a78bfa"></span>Med månedlig sparing</span>
       <span><span class="legend-dot" style="background:#f7c26c"></span>Dobblingspunkt</span>
     </div>
     <canvas id="growthChart"></canvas>
   </div>
 
+  <!-- Forklaring -->
   <div class="explainer">
     <h2>Formlene</h2>
-    <div class="formula">Regel av 72:   år ≈ 72 / rente</div>
-    <div class="formula">Eksakt:        år = log(2) / log(1 + r)</div>
+    <div class="formula">Regel av 72:      år ≈ 72 / rente</div>
+    <div class="formula">Eksakt:           år = log(2) / log(1 + r)</div>
+    <div class="formula">Med sparing:      FV = P·(1+r)ⁿ + PMT·((1+rm)^(12n) − 1) / rm</div>
     <p>
-      Regel av 72 er en tommelfingerregel som gir et raskt hoderegningsestimat.
-      Den eksakte formelen bruker logaritmer og er basert på renters rente.
-    </p>
-    <p>
-      Regelen er mest presis ved renter mellom 6% og 10%, og mindre presis ved
-      svært lave eller høye renter.
+      Regel av 72 gjelder for et engangsbeløp. Med månedlig sparing vokser
+      porteføljen raskere takket være renters rente på hver innskudd.
     </p>
   </div>
 
   <script>
-    const ctx = document.getElementById("growthChart").getContext("2d");
-
+    const ctx   = document.getElementById("growthChart").getContext("2d");
     const chart = new Chart(ctx, {
       type: "line",
       data: { labels: [], datasets: [] },
@@ -358,20 +366,20 @@
           legend: { display: false },
           tooltip: {
             callbacks: {
-              label: ctx => " " + ctx.parsed.y.toFixed(2) + " kr"
+              label: c => " " + Math.round(c.parsed.y).toLocaleString("no-NO") + " kr"
             }
           }
         },
         scales: {
           x: {
             ticks: { color: "#8b93a8" },
-            grid: { color: "#2a2d3e" },
+            grid:  { color: "#2a2d3e" },
             title: { display: true, text: "År", color: "#8b93a8" }
           },
           y: {
-            ticks: { color: "#8b93a8", callback: v => v + " kr" },
-            grid: { color: "#2a2d3e" },
-            title: { display: true, text: "Verdi (starter på 1 000 kr)", color: "#8b93a8" }
+            ticks: { color: "#8b93a8", callback: v => Math.round(v).toLocaleString("no-NO") + " kr" },
+            grid:  { color: "#2a2d3e" },
+            title: { display: true, text: "Verdi", color: "#8b93a8" }
           }
         }
       }
@@ -381,35 +389,54 @@
       return Math.round(n).toLocaleString("no-NO") + " kr";
     }
 
-    function buildChartData(rate, startAmount) {
+    function fvWithSavings(start, monthly, annualRate, years) {
+      const rm = annualRate / 100 / 12;
+      const months = years * 12;
+      const lump = start * Math.pow(1 + annualRate / 100, years);
+      const savings = rm === 0
+        ? monthly * months
+        : monthly * (Math.pow(1 + rm, months) - 1) / rm;
+      return lump + savings;
+    }
+
+    function buildChart(rate, startAmount, monthly) {
       const exact = Math.log(2) / Math.log(1 + rate / 100);
       const years = Math.ceil(exact * 2.5);
-      const labels = [];
-      const values = [];
-      const doublePoints = [];
+      const labels = [], noSav = [], withSav = [], doubPts = [];
 
       for (let y = 0; y <= years; y++) {
         labels.push(y);
-        const val = startAmount * Math.pow(1 + rate / 100, y);
-        values.push(parseFloat(val.toFixed(2)));
-        doublePoints.push(y === Math.round(exact) ? parseFloat(val.toFixed(2)) : null);
+        const plain = startAmount * Math.pow(1 + rate / 100, y);
+        noSav.push(parseFloat(plain.toFixed(2)));
+        withSav.push(parseFloat(fvWithSavings(startAmount, monthly, rate, y).toFixed(2)));
+        doubPts.push(y === Math.round(exact) ? parseFloat(plain.toFixed(2)) : null);
       }
 
-      chart.data.labels = labels;
+      chart.data.labels   = labels;
       chart.data.datasets = [
         {
-          label: "Verdi",
-          data: values,
+          label: "Uten sparing",
+          data: noSav,
           borderColor: "#6c8ef7",
-          backgroundColor: "rgba(108,142,247,0.08)",
+          backgroundColor: "rgba(108,142,247,0.07)",
           fill: true,
           tension: 0.4,
-          pointRadius: 3,
-          pointHoverRadius: 6
+          pointRadius: 2,
+          pointHoverRadius: 5
+        },
+        {
+          label: "Med sparing",
+          data: withSav,
+          borderColor: "#a78bfa",
+          backgroundColor: "rgba(167,139,250,0.07)",
+          fill: true,
+          tension: 0.4,
+          pointRadius: 2,
+          pointHoverRadius: 5
         },
         {
           label: "Dobblingspunkt",
-          data: doublePoints,
+          data: doubPts,
           borderColor: "#f7c26c",
           backgroundColor: "#f7c26c",
           pointRadius: 8,
@@ -420,39 +447,46 @@
       chart.update();
     }
 
+    function syncPresets(groupId, activeClass, matchFn) {
+      document.querySelectorAll(`#${groupId} .preset-btn`).forEach(btn => {
+        btn.classList.remove("active-blue", "active-purple", "active-green");
+        if (matchFn(btn)) btn.classList.add(activeClass);
+      });
+    }
+
     function update() {
-      const rate        = parseFloat(document.getElementById("rateSlider").value);
-      const startAmount = parseFloat(document.getElementById("amountSlider").value);
+      const rate    = parseFloat(document.getElementById("rateSlider").value);
+      const amount  = parseFloat(document.getElementById("amountSlider").value);
+      const monthly = parseFloat(document.getElementById("monthlySlider").value);
 
       document.getElementById("rateDisplay").textContent   = rate + "%";
-      document.getElementById("amountDisplay").textContent = fmt(startAmount);
+      document.getElementById("amountDisplay").textContent = fmt(amount);
+      document.getElementById("monthlyDisplay").textContent = fmt(monthly);
 
       const rule72 = 72 / rate;
       const exact  = Math.log(2) / Math.log(1 + rate / 100);
       const diff   = Math.abs(rule72 - exact);
+      const withSavAtDouble = fvWithSavings(amount, monthly, rate, exact);
 
-      document.getElementById("rule72").textContent      = rule72.toFixed(1);
-      document.getElementById("exact").textContent       = exact.toFixed(2);
-      document.getElementById("deviation").textContent   = diff.toFixed(2) + " år";
-      document.getElementById("doubleValue").textContent = fmt(startAmount * 2);
+      document.getElementById("rule72").textContent           = rule72.toFixed(1);
+      document.getElementById("exact").textContent            = exact.toFixed(2);
+      document.getElementById("deviation").textContent        = diff.toFixed(2) + " år";
+      document.getElementById("doubleValue").textContent      = fmt(amount * 2);
+      document.getElementById("doubleWithSavings").textContent = fmt(withSavAtDouble);
 
-      document.querySelectorAll(".preset-btn").forEach(btn => {
-        const v = parseFloat(btn.textContent.replace(/\s/g, ""));
-        btn.classList.toggle("active", v === rate || v === startAmount);
-      });
+      syncPresets("amountPresets",  "active-blue",
+        btn => parseFloat(btn.textContent.replace(/\s/g,"")) === amount);
+      syncPresets("monthlyPresets", "active-purple",
+        btn => parseFloat(btn.textContent.replace(/[^\d]/g,"")) === monthly);
+      syncPresets("ratePresets",    "active-green",
+        btn => parseFloat(btn.textContent) === rate);
 
-      buildChartData(rate, startAmount);
+      buildChart(rate, amount, monthly);
     }
 
-    function setRate(val) {
-      document.getElementById("rateSlider").value = val;
-      update();
-    }
-
-    function setAmount(val) {
-      document.getElementById("amountSlider").value = val;
-      update();
-    }
+    function setAmount(v)  { document.getElementById("amountSlider").value  = v; update(); }
+    function setMonthly(v) { document.getElementById("monthlySlider").value = v; update(); }
+    function setRate(v)    { document.getElementById("rateSlider").value     = v; update(); }
 
     update();
   </script>
