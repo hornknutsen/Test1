@@ -429,6 +429,53 @@
       transition: background 0.25s;
     }
 
+    /* ── INFOBOKS ── */
+    .insight-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 22px 24px;
+      box-shadow: 0 1px 4px var(--shadow);
+      transition: background 0.25s, border-color 0.25s;
+    }
+
+    .insight-box .card-title { margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border-div); }
+
+    .insight-points {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .insight-point {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .insight-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .insight-point strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .insight-point .hi {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .insight-point.warn .hi { color: #e05c5c; }
+    .insight-point.good .hi { color: #22c55e; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
       .main-grid { grid-template-columns: 1fr; }
@@ -627,6 +674,12 @@
           </div>
         </div>
 
+        <!-- Infoboks -->
+        <div class="insight-box">
+          <div class="card-title">Hva betyr tallene?</div>
+          <div class="insight-points" id="insightPoints"></div>
+        </div>
+
         <!-- Formler -->
         <div class="formula-strip">
           <div class="formula-item">
@@ -810,6 +863,67 @@
       syncPresets("inflationPresets", btn => parseFloat(btn.textContent) === inflation);
 
       buildChart(rate, amount, monthly, tax, inflation);
+      updateInsights(rate, amount, monthly, tax, inflation, exact, nomAtD, taxAtD, realAtD, netR, realR);
+    }
+
+    function updateInsights(rate, amount, monthly, tax, inflation, exact, nomAtD, taxAtD, realAtD, netR, realR) {
+      const yr   = exact.toFixed(1);
+      const loss = ((nomAtD - taxAtD) / nomAtD * 100).toFixed(1);
+      const infLoss = ((taxAtD - realAtD) / taxAtD * 100).toFixed(1);
+      const savBoost = monthly > 0 ? fmt(fv(amount, monthly, rate, exact) - fv(amount, 0, rate, exact)) : null;
+      const realOk  = realR > 0;
+
+      const points = [];
+
+      // Dobling
+      points.push({
+        icon: "📈",
+        cls: "",
+        html: `Med <strong>${fmt(amount)}</strong> til <strong>${rate}% rente</strong> dobler startbeløpet seg om <span class="hi">${yr} år</span>. Regel av 72 gir samme svar på sekunder: 72 ÷ ${rate} = ${(72/rate).toFixed(1)}.`
+      });
+
+      // Skatt
+      if (tax > 0) {
+        points.push({
+          icon: "🏦",
+          cls: "warn",
+          html: `Kapitalskatt på <strong>${tax}%</strong> spiser <span class="hi">${loss}%</span> av gevinsten. Du sitter igjen med <strong>${fmt(taxAtD)}</strong> i stedet for <strong>${fmt(nomAtD)}</strong> ved doblingspunktet.`
+        });
+      }
+
+      // Inflasjon
+      if (inflation > 0) {
+        const realClass = realR < 1 ? "warn" : "";
+        points.push({
+          icon: "💸",
+          cls: realClass,
+          html: realR > 0
+            ? `Etter <strong>${inflation}% inflasjon</strong> er kjøpekraften <span class="hi">${fmt(realAtD)}</span> — <strong>${infLoss}% lavere</strong> enn nominell verdi. Realrenten er <span class="hi">${realR.toFixed(2)}%</span>.`
+            : `⚠️ Inflasjon på <strong>${inflation}%</strong> er høyere enn nettorenten på <strong>${netR.toFixed(2)}%</strong>. Kjøpekraften din <span class="hi">synker over tid</span> selv om tallene vokser.`
+        });
+      }
+
+      // Månedlig sparing
+      if (monthly > 0 && savBoost) {
+        points.push({
+          icon: "💰",
+          cls: "good",
+          html: `Månedlig sparing på <strong>${fmt(monthly)}</strong> tilfører <span class="hi">${savBoost}</span> ekstra ved doblingspunktet — takket være renters rente på hvert innskudd.`
+        });
+      }
+
+      // Høy rente advarsel
+      if (rate >= 15) {
+        points.push({
+          icon: "⚠️",
+          cls: "warn",
+          html: `En rente på <strong>${rate}%</strong> er svært optimistisk. Historisk børsavkastning er typisk <span class="hi">7–10%</span> per år. Høyere avkastning innebærer som regel høyere risiko.`
+        });
+      }
+
+      document.getElementById("insightPoints").innerHTML = points
+        .map(p => `<div class="insight-point ${p.cls}"><span class="insight-icon">${p.icon}</span><span>${p.html}</span></div>`)
+        .join("");
     }
 
     function setVal(id, v) { document.getElementById(id).value = v; update(); }
