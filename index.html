@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regel av 72</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f1117;
+      color: #e8eaf0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    header h1 span {
+      color: #6c8ef7;
+    }
+
+    header p {
+      margin-top: 10px;
+      color: #8b93a8;
+      font-size: 1rem;
+      max-width: 480px;
+    }
+
+    .card {
+      background: #1a1d27;
+      border: 1px solid #2a2d3e;
+      border-radius: 16px;
+      padding: 36px;
+      width: 100%;
+      max-width: 520px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #8b93a8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .input-group input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 6px;
+      background: #2a2d3e;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .input-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #6c8ef7;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .input-group input[type="range"]::-webkit-slider-thumb:hover {
+      background: #8aaafa;
+    }
+
+    .rate-display {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #6c8ef7;
+      min-width: 70px;
+      text-align: right;
+    }
+
+    .presets {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .preset-btn {
+      background: #2a2d3e;
+      border: 1px solid #3a3d52;
+      color: #c0c6d8;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .preset-btn:hover {
+      background: #3a3d52;
+      color: #e8eaf0;
+    }
+
+    .preset-btn.active {
+      background: #6c8ef7;
+      border-color: #6c8ef7;
+      color: #fff;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .result-box {
+      background: #0f1117;
+      border: 1px solid #2a2d3e;
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .result-box .label {
+      font-size: 0.8rem;
+      color: #8b93a8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+
+    .result-box .value {
+      font-size: 2.6rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .result-box .unit {
+      font-size: 0.9rem;
+      color: #8b93a8;
+      margin-top: 6px;
+    }
+
+    .result-box.estimate .value { color: #f7c26c; }
+    .result-box.exact .value    { color: #6cf7a8; }
+
+    .deviation {
+      margin-top: 16px;
+      background: #0f1117;
+      border: 1px solid #2a2d3e;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      color: #8b93a8;
+    }
+
+    .deviation span {
+      color: #e8eaf0;
+      font-weight: 600;
+    }
+
+    .explainer {
+      background: #1a1d27;
+      border: 1px solid #2a2d3e;
+      border-radius: 16px;
+      padding: 28px 36px;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .explainer h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #8b93a8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .formula {
+      background: #0f1117;
+      border: 1px solid #2a2d3e;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+      color: #6c8ef7;
+      margin-bottom: 12px;
+    }
+
+    .explainer p {
+      font-size: 0.9rem;
+      color: #8b93a8;
+      line-height: 1.7;
+    }
+
+    .explainer p + p {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Regel av <span>72</span></h1>
+    <p>Finn ut hvor mange år det tar å doble investeringen din — raskt og nøyaktig.</p>
+  </header>
+
+  <div class="card">
+    <h2>Årlig rente</h2>
+    <div class="input-group">
+      <input type="range" id="rateSlider" min="0.5" max="30" step="0.5" value="7" oninput="update()" />
+      <div class="rate-display" id="rateDisplay">7%</div>
+    </div>
+    <div class="presets">
+      <button class="preset-btn" onclick="setRate(3)">3%</button>
+      <button class="preset-btn active" onclick="setRate(7)">7%</button>
+      <button class="preset-btn" onclick="setRate(10)">10%</button>
+      <button class="preset-btn" onclick="setRate(15)">15%</button>
+      <button class="preset-btn" onclick="setRate(20)">20%</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Resultat — år til dobling</h2>
+    <div class="results">
+      <div class="result-box estimate">
+        <div class="label">Regel av 72</div>
+        <div class="value" id="rule72">10.3</div>
+        <div class="unit">år (estimat)</div>
+      </div>
+      <div class="result-box exact">
+        <div class="label">Eksakt</div>
+        <div class="value" id="exact">10.24</div>
+        <div class="unit">år (logaritme)</div>
+      </div>
+    </div>
+    <div class="deviation">
+      Avvik mellom metodene
+      <span id="deviation">0.04 år</span>
+    </div>
+  </div>
+
+  <div class="explainer">
+    <h2>Formlene</h2>
+    <div class="formula">Regel av 72:   år ≈ 72 / rente</div>
+    <div class="formula">Eksakt:        år = log(2) / log(1 + r)</div>
+    <p>
+      Regel av 72 er en tommelfingerregel som gir et raskt hoderegningsestimat.
+      Den eksakte formelen bruker logaritmer og er basert på renters rente.
+    </p>
+    <p>
+      Regelen er mest presis ved renter mellom 6% og 10%, og mindre presis ved
+      svært lave eller høye renter.
+    </p>
+  </div>
+
+  <script>
+    function update() {
+      const rate = parseFloat(document.getElementById("rateSlider").value);
+      document.getElementById("rateDisplay").textContent = rate + "%";
+
+      const rule72 = 72 / rate;
+      const exact  = Math.log(2) / Math.log(1 + rate / 100);
+      const diff   = Math.abs(rule72 - exact);
+
+      document.getElementById("rule72").textContent   = rule72.toFixed(1);
+      document.getElementById("exact").textContent    = exact.toFixed(2);
+      document.getElementById("deviation").textContent = diff.toFixed(2) + " år";
+
+      document.querySelectorAll(".preset-btn").forEach(btn => {
+        btn.classList.toggle("active", parseFloat(btn.textContent) === rate);
+      });
+    }
+
+    function setRate(val) {
+      document.getElementById("rateSlider").value = val;
+      update();
+    }
+
+    update();
+  </script>
+
+</body>
+</html>
