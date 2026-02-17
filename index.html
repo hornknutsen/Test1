@@ -8,11 +8,51 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ── TEMA-VARIABLER ── */
+    :root {
+      --bg:          #f0f4f9;
+      --bg-card:     #ffffff;
+      --bg-pill:     #f0f4f9;
+      --bg-code:     #f0f4f9;
+      --border:      #dde3ec;
+      --border-div:  #e8edf5;
+      --text:        #1a2332;
+      --text-muted:  #596880;
+      --accent:      #002776;
+      --accent-hover:#e2eaf5;
+      --shadow:      rgba(0,39,118,0.06);
+      --grid-line:   #edf1f7;
+      --tooltip-bg:  #ffffff;
+      --tooltip-title: #002776;
+      --tooltip-body:  #596880;
+      --tooltip-border:#dde3ec;
+    }
+
+    html[data-theme="dark"] {
+      --bg:          #0f1117;
+      --bg-card:     #1a1d27;
+      --bg-pill:     #22263a;
+      --bg-code:     #22263a;
+      --border:      #2a2d3e;
+      --border-div:  #2a2d3e;
+      --text:        #e8eaf0;
+      --text-muted:  #8b93a8;
+      --accent:      #4a7fd4;
+      --accent-hover:#2a3a5e;
+      --shadow:      rgba(0,0,0,0.3);
+      --grid-line:   #1e2130;
+      --tooltip-bg:  #1a1d27;
+      --tooltip-title: #a0c4ff;
+      --tooltip-body:  #8b93a8;
+      --tooltip-border:#2a2d3e;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f0f4f9;
-      color: #1a2332;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      transition: background 0.25s, color 0.25s;
     }
 
     /* ── HEADER ── */
@@ -48,11 +88,60 @@
 
     .logo-icon svg { width: 22px; height: 22px; }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
     .header-sub {
       font-size: 0.82rem;
       color: rgba(255,255,255,0.65);
       font-weight: 400;
     }
+
+    /* ── DARK MODE TOGGLE ── */
+    .theme-toggle {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      width: 52px;
+      height: 28px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover { background: rgba(255,255,255,0.2); }
+
+    .theme-toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.22s cubic-bezier(.4,0,.2,1);
+    }
+
+    html[data-theme="dark"] .theme-toggle::after {
+      transform: translateX(24px);
+    }
+
+    .toggle-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .toggle-icon.sun { left: 5px; }
+    .toggle-icon.moon { right: 5px; }
 
     /* ── PAGE ── */
     .page {
@@ -64,13 +153,13 @@
     .page-title {
       font-size: 1.5rem;
       font-weight: 700;
-      color: #002776;
+      color: var(--accent);
       margin-bottom: 4px;
     }
 
     .page-sub {
       font-size: 0.9rem;
-      color: #596880;
+      color: var(--text-muted);
       margin-bottom: 28px;
     }
 
@@ -84,22 +173,23 @@
 
     /* ── CARDS ── */
     .card {
-      background: #fff;
-      border: 1px solid #dde3ec;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 24px;
-      box-shadow: 0 1px 4px rgba(0,39,118,0.06);
+      box-shadow: 0 1px 4px var(--shadow);
+      transition: background 0.25s, border-color 0.25s;
     }
 
     .card-title {
       font-size: 0.72rem;
       font-weight: 700;
-      color: #002776;
+      color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 1.1px;
       margin-bottom: 16px;
       padding-bottom: 10px;
-      border-bottom: 2px solid #e8edf5;
+      border-bottom: 2px solid var(--border-div);
     }
 
     /* ── INPUTS ── */
@@ -115,21 +205,21 @@
 
     .input-label span:first-child {
       font-size: 0.88rem;
-      color: #596880;
+      color: var(--text-muted);
       font-weight: 500;
     }
 
     .input-label .val {
       font-size: 1rem;
       font-weight: 700;
-      color: #002776;
+      color: var(--accent);
     }
 
     input[type="range"] {
       width: 100%;
       -webkit-appearance: none;
       height: 5px;
-      background: #dde3ec;
+      background: var(--border);
       border-radius: 4px;
       outline: none;
       cursor: pointer;
@@ -139,11 +229,11 @@
       -webkit-appearance: none;
       width: 18px;
       height: 18px;
-      background: #002776;
-      border: 3px solid #fff;
+      background: var(--accent);
+      border: 3px solid var(--bg-card);
       border-radius: 50%;
       cursor: pointer;
-      box-shadow: 0 0 0 2px #002776;
+      box-shadow: 0 0 0 2px var(--accent);
       transition: transform 0.15s;
     }
 
@@ -157,9 +247,9 @@
     }
 
     .preset-btn {
-      background: #f0f4f9;
-      border: 1px solid #dde3ec;
-      color: #596880;
+      background: var(--bg-pill);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
       border-radius: 6px;
       padding: 4px 10px;
       font-size: 0.78rem;
@@ -168,17 +258,17 @@
       transition: all 0.12s;
     }
 
-    .preset-btn:hover { background: #e2eaf5; color: #002776; border-color: #002776; }
+    .preset-btn:hover { background: var(--accent-hover); color: var(--accent); border-color: var(--accent); }
 
     .preset-btn.active {
-      background: #002776;
-      border-color: #002776;
+      background: var(--accent);
+      border-color: var(--accent);
       color: #fff;
     }
 
     .divider {
       border: none;
-      border-top: 1px solid #e8edf5;
+      border-top: 1px solid var(--border-div);
       margin: 20px 0;
     }
 
@@ -193,11 +283,12 @@
     }
 
     .result-tile {
-      background: #fff;
-      border: 1px solid #dde3ec;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 18px 16px;
-      box-shadow: 0 1px 4px rgba(0,39,118,0.06);
+      box-shadow: 0 1px 4px var(--shadow);
+      transition: background 0.25s, border-color 0.25s;
     }
 
     .result-tile.accent {
@@ -208,7 +299,7 @@
     .result-tile .tile-label {
       font-size: 0.72rem;
       font-weight: 600;
-      color: #596880;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.9px;
       margin-bottom: 8px;
@@ -219,7 +310,7 @@
     .result-tile .tile-value {
       font-size: 1.8rem;
       font-weight: 700;
-      color: #002776;
+      color: var(--accent);
       line-height: 1;
     }
 
@@ -227,7 +318,7 @@
 
     .result-tile .tile-unit {
       font-size: 0.78rem;
-      color: #596880;
+      color: var(--text-muted);
       margin-top: 4px;
     }
 
@@ -235,11 +326,12 @@
 
     /* ── CHART CARD ── */
     .chart-wrap {
-      background: #fff;
-      border: 1px solid #dde3ec;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 24px;
-      box-shadow: 0 1px 4px rgba(0,39,118,0.06);
+      box-shadow: 0 1px 4px var(--shadow);
+      transition: background 0.25s, border-color 0.25s;
     }
 
     .chart-header {
@@ -256,7 +348,7 @@
       gap: 16px;
       flex-wrap: wrap;
       font-size: 0.78rem;
-      color: #596880;
+      color: var(--text-muted);
     }
 
     .legend-item { display: flex; align-items: center; gap: 5px; }
@@ -281,17 +373,18 @@
     }
 
     .info-pill {
-      background: #f0f4f9;
+      background: var(--bg-pill);
       border-radius: 8px;
       padding: 12px 14px;
       display: flex;
       flex-direction: column;
       gap: 3px;
+      transition: background 0.25s;
     }
 
     .info-pill .ip-label {
       font-size: 0.72rem;
-      color: #596880;
+      color: var(--text-muted);
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.7px;
@@ -300,25 +393,26 @@
     .info-pill .ip-val {
       font-size: 0.95rem;
       font-weight: 700;
-      color: #002776;
+      color: var(--accent);
     }
 
     /* ── FORMULA STRIP ── */
     .formula-strip {
-      background: #fff;
-      border: 1px solid #dde3ec;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 20px 24px;
-      box-shadow: 0 1px 4px rgba(0,39,118,0.06);
+      box-shadow: 0 1px 4px var(--shadow);
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 14px;
+      transition: background 0.25s, border-color 0.25s;
     }
 
     .formula-item .f-label {
       font-size: 0.7rem;
       font-weight: 600;
-      color: #596880;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.8px;
       margin-bottom: 5px;
@@ -327,11 +421,12 @@
     .formula-item code {
       font-family: "SFMono-Regular", "Courier New", monospace;
       font-size: 0.82rem;
-      color: #002776;
-      background: #f0f4f9;
+      color: var(--accent);
+      background: var(--bg-code);
       padding: 6px 10px;
       border-radius: 6px;
       display: block;
+      transition: background 0.25s;
     }
 
     /* ── RESPONSIVE ── */
@@ -346,6 +441,7 @@
       .result-strip { grid-template-columns: 1fr 1fr; }
       .formula-strip { grid-template-columns: 1fr; }
       .info-grid { grid-template-columns: 1fr; }
+      .header-sub { display: none; }
     }
   </style>
 </head>
@@ -361,7 +457,13 @@
       </div>
       Investeringskalkulator
     </div>
-    <span class="header-sub">Regel av 72 — dobling av kapital</span>
+    <div class="header-right">
+      <span class="header-sub">Regel av 72 — dobling av kapital</span>
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Bytt tema">
+        <span class="toggle-icon sun">☀️</span>
+        <span class="toggle-icon moon">🌙</span>
+      </button>
+    </div>
   </header>
 
   <div class="page">
@@ -546,7 +648,43 @@
   </div>
 
   <script>
+    // ── TEMA ──
+    const saved = localStorage.getItem("theme");
+    if (saved) document.documentElement.setAttribute("data-theme", saved);
+
+    function isDark() { return document.documentElement.getAttribute("data-theme") === "dark"; }
+
+    function toggleTheme() {
+      const dark = !isDark();
+      document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      localStorage.setItem("theme", dark ? "dark" : "light");
+      updateChartTheme();
+    }
+
+    function chartColors() {
+      return isDark()
+        ? { text: "#8b93a8", grid: "#1e2130", tooltipBg: "#1a1d27", tooltipTitle: "#a0c4ff", tooltipBody: "#8b93a8", tooltipBorder: "#2a2d3e" }
+        : { text: "#596880", grid: "#edf1f7", tooltipBg: "#ffffff",  tooltipTitle: "#002776", tooltipBody: "#596880",  tooltipBorder: "#dde3ec" };
+    }
+
+    function updateChartTheme() {
+      const c = chartColors();
+      chart.options.plugins.tooltip.backgroundColor = c.tooltipBg;
+      chart.options.plugins.tooltip.titleColor      = c.tooltipTitle;
+      chart.options.plugins.tooltip.bodyColor       = c.tooltipBody;
+      chart.options.plugins.tooltip.borderColor     = c.tooltipBorder;
+      chart.options.scales.x.ticks.color  = c.text;
+      chart.options.scales.x.grid.color   = c.grid;
+      chart.options.scales.x.title.color  = c.text;
+      chart.options.scales.y.ticks.color  = c.text;
+      chart.options.scales.y.grid.color   = c.grid;
+      chart.options.scales.y.title.color  = c.text;
+      chart.update();
+    }
+
+    // ── CHART ──
     const ctx   = document.getElementById("growthChart").getContext("2d");
+    const c0    = chartColors();
     const chart = new Chart(ctx, {
       type: "line",
       data: { labels: [], datasets: [] },
@@ -556,10 +694,10 @@
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: "#fff",
-            titleColor: "#002776",
-            bodyColor: "#596880",
-            borderColor: "#dde3ec",
+            backgroundColor: c0.tooltipBg,
+            titleColor:       c0.tooltipTitle,
+            bodyColor:        c0.tooltipBody,
+            borderColor:      c0.tooltipBorder,
             borderWidth: 1,
             padding: 12,
             callbacks: {
@@ -569,14 +707,14 @@
         },
         scales: {
           x: {
-            ticks: { color: "#596880", font: { size: 11 } },
-            grid:  { color: "#edf1f7" },
-            title: { display: true, text: "År", color: "#596880", font: { size: 11 } }
+            ticks: { color: c0.text, font: { size: 11 } },
+            grid:  { color: c0.grid },
+            title: { display: true, text: "År", color: c0.text, font: { size: 11 } }
           },
           y: {
-            ticks: { color: "#596880", font: { size: 11 }, callback: v => Math.round(v).toLocaleString("no-NO") + " kr" },
-            grid:  { color: "#edf1f7" },
-            title: { display: true, text: "Verdi", color: "#596880", font: { size: 11 } }
+            ticks: { color: c0.text, font: { size: 11 }, callback: v => Math.round(v).toLocaleString("no-NO") + " kr" },
+            grid:  { color: c0.grid },
+            title: { display: true, text: "Verdi", color: c0.text, font: { size: 11 } }
           }
         }
       }
