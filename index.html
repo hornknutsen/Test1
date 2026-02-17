@@ -269,6 +269,21 @@
   </header>
 
   <div class="card">
+    <h2>Startbeløp</h2>
+    <div class="input-group">
+      <input type="range" id="amountSlider" min="1000" max="1000000" step="1000" value="10000" oninput="update()" />
+      <div class="rate-display" id="amountDisplay" style="min-width:100px;font-size:1.2rem">10 000 kr</div>
+    </div>
+    <div class="presets">
+      <button class="preset-btn" onclick="setAmount(5000)">5 000</button>
+      <button class="preset-btn active" onclick="setAmount(10000)">10 000</button>
+      <button class="preset-btn" onclick="setAmount(50000)">50 000</button>
+      <button class="preset-btn" onclick="setAmount(100000)">100 000</button>
+      <button class="preset-btn" onclick="setAmount(500000)">500 000</button>
+    </div>
+  </div>
+
+  <div class="card">
     <h2>Årlig rente</h2>
     <div class="input-group">
       <input type="range" id="rateSlider" min="0.5" max="30" step="0.5" value="7" oninput="update()" />
@@ -298,6 +313,10 @@
       </div>
     </div>
     <div class="deviation">
+      Verdi ved dobling
+      <span id="doubleValue">20 000 kr</span>
+    </div>
+    <div class="deviation" style="margin-top:8px">
       Avvik mellom metodene
       <span id="deviation">0.04 år</span>
     </div>
@@ -358,7 +377,11 @@
       }
     });
 
-    function buildChartData(rate) {
+    function fmt(n) {
+      return Math.round(n).toLocaleString("no-NO") + " kr";
+    }
+
+    function buildChartData(rate, startAmount) {
       const exact = Math.log(2) / Math.log(1 + rate / 100);
       const years = Math.ceil(exact * 2.5);
       const labels = [];
@@ -367,7 +390,7 @@
 
       for (let y = 0; y <= years; y++) {
         labels.push(y);
-        const val = 1000 * Math.pow(1 + rate / 100, y);
+        const val = startAmount * Math.pow(1 + rate / 100, y);
         values.push(parseFloat(val.toFixed(2)));
         doublePoints.push(y === Math.round(exact) ? parseFloat(val.toFixed(2)) : null);
       }
@@ -398,26 +421,36 @@
     }
 
     function update() {
-      const rate = parseFloat(document.getElementById("rateSlider").value);
-      document.getElementById("rateDisplay").textContent = rate + "%";
+      const rate        = parseFloat(document.getElementById("rateSlider").value);
+      const startAmount = parseFloat(document.getElementById("amountSlider").value);
+
+      document.getElementById("rateDisplay").textContent   = rate + "%";
+      document.getElementById("amountDisplay").textContent = fmt(startAmount);
 
       const rule72 = 72 / rate;
       const exact  = Math.log(2) / Math.log(1 + rate / 100);
       const diff   = Math.abs(rule72 - exact);
 
-      document.getElementById("rule72").textContent    = rule72.toFixed(1);
-      document.getElementById("exact").textContent     = exact.toFixed(2);
-      document.getElementById("deviation").textContent = diff.toFixed(2) + " år";
+      document.getElementById("rule72").textContent      = rule72.toFixed(1);
+      document.getElementById("exact").textContent       = exact.toFixed(2);
+      document.getElementById("deviation").textContent   = diff.toFixed(2) + " år";
+      document.getElementById("doubleValue").textContent = fmt(startAmount * 2);
 
       document.querySelectorAll(".preset-btn").forEach(btn => {
-        btn.classList.toggle("active", parseFloat(btn.textContent) === rate);
+        const v = parseFloat(btn.textContent.replace(/\s/g, ""));
+        btn.classList.toggle("active", v === rate || v === startAmount);
       });
 
-      buildChartData(rate);
+      buildChartData(rate, startAmount);
     }
 
     function setRate(val) {
       document.getElementById("rateSlider").value = val;
+      update();
+    }
+
+    function setAmount(val) {
+      document.getElementById("amountSlider").value = val;
       update();
     }
 
